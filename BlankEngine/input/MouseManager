@@ -1,0 +1,117 @@
+package blankengine.input;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import blankengine.ui.UIManager;
+
+public class MouseManager implements MouseListener, MouseMotionListener, MouseWheelListener{
+
+    private boolean leftPressed, rightPressed, middlePressed, dragging = false;
+    private int mouseX, mouseY;
+    private UIManager uiManager;
+    
+    public MouseManager() {
+    }
+
+    public void setUiManager(UIManager uiManager) {
+        this.uiManager = uiManager;
+    }
+
+    public boolean isMiddlePressed() {
+        return middlePressed;
+    }
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    public int getMouseX() {
+        return mouseX;
+    }
+
+    public int getMouseY() {
+        return mouseY;
+    }
+    
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    public void mousePressed(MouseEvent me) {
+        if (me.getButton() == MouseEvent.BUTTON1){
+            leftPressed = true;
+        }
+        if (me.getButton() == MouseEvent.BUTTON2){
+            middlePressed = true;
+        }
+        if (me.getButton() == MouseEvent.BUTTON3){
+            rightPressed = true;
+        }
+    }
+
+    public void mouseReleased(MouseEvent me) {
+        dragging = false;
+        if (me.getButton() == MouseEvent.BUTTON1){
+            leftPressed = false;
+        }
+        if (me.getButton() == MouseEvent.BUTTON2){
+            middlePressed = false;
+        }
+        if (me.getButton() == MouseEvent.BUTTON3){
+            rightPressed = false;
+        }
+        if (uiManager != null){
+            uiManager.onMouseRelease(me);
+        }
+    }
+
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    public void mouseExited(MouseEvent me) {
+        
+    }
+
+    public void mouseDragged(MouseEvent me) {
+        dragging = true;
+        if (me.getButton() == MouseEvent.BUTTON1){
+            dragging = true;
+        }
+        mouseX = me.getX();
+        mouseY = me.getY();
+        if (uiManager != null){
+            uiManager.onMouseMove(me);
+        }
+    }
+
+    public void mouseMoved(MouseEvent me) {
+        mouseX = me.getX();
+        mouseY = me.getY();
+        if (uiManager != null){
+            uiManager.onMouseMove(me);
+        }   
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent mwe) {
+        //scrollbars
+        uiManager.onScroll(mwe.getWheelRotation());
+    }
+
+    public boolean isDragging() {
+        return dragging;
+    }
+
+    public void setDragging(boolean dragging) {
+        this.dragging = dragging;
+    }
+    
+}
